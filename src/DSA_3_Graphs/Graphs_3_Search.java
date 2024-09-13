@@ -25,7 +25,8 @@ public class Graphs_3_Search {
 
 //        BFS Traversal
         System.out.println(graph.BFSSearch("A", "G"));
-        graph.removeEdge("D", "E");
-        System.out.println(graph.BFSSearch("A", "G"));
+//        graph.removeEdge("D", "E");
+//        System.out.println(graph.BFSSearch("A", "G"));
+        System.out.println(graph.DFSSearch("A", "G"));
     }
 }

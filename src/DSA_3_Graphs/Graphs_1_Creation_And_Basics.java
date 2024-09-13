@@ -164,4 +164,50 @@ public class Graphs_1_Creation_And_Basics {
         }
         return false;
     }
+
+    public boolean DFSSearch(String src, String destination){
+        HashMap<String, Boolean> processed = new HashMap<>();
+//        This is for the queue purpose
+        LinkedList<Pair> stack = new LinkedList<>();
+        Pair initialPair = new Pair();
+        initialPair.vertexName = src;
+        initialPair.pathSoFar = src;
+
+//        Put the initial pair in the queue
+        stack.addFirst(initialPair);
+//        Till the queue is not empty
+
+        while (!stack.isEmpty()){
+            Pair removedPair = stack.removeFirst();
+//            If the node is already present in the processed Hashmap then no need to
+//            keep that node again in the hashmap
+            if (processed.containsKey(removedPair.vertexName)){
+                continue;
+//                Due to the usage of to continue all the below statements will not
+//                execute and the execution goes on.
+            }
+//            Put in the processed Hashmap
+            processed.put(removedPair.vertexName, true);
+//            Check for the direct edge
+            if (containsEdge(removedPair.vertexName, destination)){
+                System.out.println("Path -> " + removedPair.pathSoFar + destination);
+                return true;
+            }
+//            If the direct edge is not there then go to the neighbours of that
+//            and check for the path
+            Vertex neighboursVertexChunkLocation = vtces.get(removedPair.vertexName);
+            ArrayList<String> neighbours = new ArrayList<>(neighboursVertexChunkLocation.nbrs.keySet());
+            for (String nbr : neighbours){
+//                If it is not processed then only add to the processed array
+                if (!processed.containsKey(nbr)){
+//                    Making the new pair of neighbour and put in the queue
+                    Pair newPair = new Pair();
+                    newPair.vertexName = nbr;
+                    newPair.pathSoFar = removedPair.pathSoFar + nbr;
+                    stack.addFirst(newPair);
+                }
+            }
+        }
+        return false;
+    }
 }
