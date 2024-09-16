@@ -368,4 +368,61 @@ public class Graphs_1_Creation_And_Basics {
         }
         return false;
     }
+
+    public boolean isConnected() {
+        HashMap<String, Boolean> processed = new HashMap<>();
+//        This is for the queue purpose
+        LinkedList<Pair> queue = new LinkedList<>();
+        ArrayList<String> keys = new ArrayList<>(vtces.keySet());
+
+        int flag = 0;
+
+        for (String key : keys) {
+            if (processed.containsKey(key)){
+                continue;
+            }
+            Pair initialPair = new Pair();
+            initialPair.vertexName = key;
+            initialPair.pathSoFar = key;
+
+//            If there is no connection then the below code will only execute for once
+            flag++;
+
+//        Put the initial pair in the queue
+            queue.addLast(initialPair);
+//        Till the queue is not empty
+            while (!queue.isEmpty()) {
+                Pair removedPair = queue.removeFirst();
+//            If the node is already present in the processed Hashmap then no need to
+//            keep that node again in the hashmap
+
+                if (processed.containsKey(removedPair.vertexName)) {
+                    continue;
+//                Due to the usage of to continue all the below statements will not
+//                execute and the execution goes on.
+                }
+//            Put in the processed Hashmap
+                processed.put(removedPair.vertexName, true);
+
+//            This is to print the path
+                System.out.println(removedPair.vertexName + " " + removedPair.pathSoFar);
+
+//            If the direct edge is not there then go to the neighbours of that
+//            and check for the path
+                Vertex neighboursVertexChunkLocation = vtces.get(removedPair.vertexName);
+                ArrayList<String> neighbours = new ArrayList<>(neighboursVertexChunkLocation.nbrs.keySet());
+                for (String nbr : neighbours) {
+//                If it is not processed then only add to the processed array
+                    if (!processed.containsKey(nbr)) {
+//                    Making the new pair of neighbour and put in the queue
+                        Pair newPair = new Pair();
+                        newPair.vertexName = nbr;
+                        newPair.pathSoFar = removedPair.pathSoFar + nbr;
+                        queue.addLast(newPair);
+                    }
+                }
+            }
+        }
+        return !(flag >= 2);
+    }
 }
